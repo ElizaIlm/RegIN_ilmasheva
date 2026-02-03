@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RegIN_Ilmashevaa.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace RegIN_Ilmashevaa
         public MainWindow()
         {
             InitializeComponent();
+            SendMail.SendMessage("hffhfhfhfh", "ilmeliza36@gmail.com");
         }
     }
 }
