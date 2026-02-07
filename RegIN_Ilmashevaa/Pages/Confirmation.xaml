@@ -34,7 +34,7 @@
                 <Label Content="Enter code"
                    Margin="10,161,10,0"
                    VerticalAlignment="Top"/>
-                <TextBox x:Name="TBCode"
+                <TextBox x:Name="TbCode"
                      Height="23"
                      Margin="10,185,10,0"
                      TextWrapping="Wrap"

@@ -1,9 +1,13 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Windows.Documents;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
+using System.Windows.Controls;
 
 namespace RegIN_Ilmashevaa.Classes
 {
@@ -38,12 +42,12 @@ namespace RegIN_Ilmashevaa.Classes
             /// <summary>
             /// Дата и время обновления пользователя
             /// </summary>
-            public DateTime DateTimeUpdate { get; set; }
+            public DateTime DateUpdate { get; set; }
 
             /// <summary>
             /// Дата и время создания пользователя
             /// </summary>
-            public DateTime DateTimeCreate { get; set; }
+            public DateTime DateCreate { get; set; }
 
             /// <summary>
             /// Событие успешной авторизации
@@ -56,7 +60,7 @@ namespace RegIN_Ilmashevaa.Classes
             public InCorrectLogin HandlerInCorrectLogin;
             public delegate void CorrectLogin();
             public delegate void InCorrectLogin();
-            public void GetUserLogin(string Login)
+            public void GetUserLogin(string login)
             {
                 this.Id = -1;
                 this.Login = string.Empty;
@@ -98,9 +102,9 @@ namespace RegIN_Ilmashevaa.Classes
                             // Записываем изображение пользователя
                             userQuery.GetBytes(4, 0, Image, 0, (int)imageLength);
                         }
-                        this.DateTimeUpdate = userQuery.GetDateTime(5);
+                        this.DateUpdate = userQuery.GetDateTime(5);
                         // Записываем дату создания
-                        this.DateTimeCreate = userQuery.GetDateTime(6);
+                        this.DateCreate = userQuery.GetDateTime(6);
                         HandlerCorrectLogin.Invoke();
                     }
                     else
@@ -113,6 +117,44 @@ namespace RegIN_Ilmashevaa.Classes
 
 
             }
+        public void SetUser()
+        {
+            // Открываем соединение с базой данных
+            MySqlConnection mySqlConnection = WorkingDB.OpenConnection();
+
+            // Проверяем что соединение действительно открыто
+            if (WorkingDB.OpenConnection(mySqlConnection))
+            {
+                // Создаём запрос на добавление пользователя
+                MySqlCommand mySqlCommand = new MySqlCommand("INSERT INTO `users`(`Login`, `Password`, `Name`, `Image`, `DateUpdate`, `DateCreate`) VALUES (@Login, @Password, @Name, @Image, @DateUpdate, @DateCreate)", mySqlConnection);
+
+                // Добавляем параметр логина
+                mySqlCommand.Parameters.AddWithValue("@Login", this.Login);
+
+                // Добавляем параметр пароля
+                mySqlCommand.Parameters.AddWithValue("@Password", this.Password);
+
+                // Добавляем параметр наименования
+                mySqlCommand.Parameters.AddWithValue("@Name", this.Name);
+
+                // Добавляем параметр изображения
+                mySqlCommand.Parameters.AddWithValue("@Image", this.Image);
+
+                // Добавляем параметр даты обновления
+                mySqlCommand.Parameters.AddWithValue("@DateUpdate", this.DateUpdate);
+
+                // Добавляем параметр даты создания
+                mySqlCommand.Parameters.AddWithValue("@DateCreate", this.DateCreate);
+
+                // Выполняем запрос без возврата результата
+                mySqlCommand.ExecuteNonQuery();
+            }
+        
+
+        // Закрываем подключение к базе данных
+        WorkingDB.CloseConnection(mySqlConnection);
+        }
+
         public void CrateNewPassword()
         {
             // Если наш логин не равен пустому значению
