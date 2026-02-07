@@ -60,11 +60,8 @@ namespace RegIN_Ilmashevaa.Elements
             // Очищаем пользовательское поле с капчей
             InputCapture.Text = "";
             Capture.Children.Clear();
-            // Очищаем текстовое значение капчи
             StrCapture = "";
-            // Вызываем функцию создания заднего фона капчи
             CreateBackground();
-            // Вызываем функцию создания переднего фона капчи
             Background();
         }
 
@@ -140,8 +137,6 @@ namespace RegIN_Ilmashevaa.Elements
             /// <returns>Правильно ли введена капча</returns>
             public bool OnCapture()
             {
-                // Если значения равны : True
-                // Иначе : False
                 return StrCapture == InputCapture.Text;
             }
 
@@ -150,19 +145,14 @@ namespace RegIN_Ilmashevaa.Elements
             /// </summary>
             private void EnterCapture(object sender, KeyEventArgs e)
             {
-                // Если кол-во символов введённых в окно капчи 4
                 if (InputCapture.Text.Length == 4)
                 {
-                    // Если проверка на капчу не проходит
                     if (!OnCapture())
                     {
-                        // Создаём новую капчу
                         CreateCapture();
                     }
-                    // Если проверка на капчу проходит и на событие кто-то подписан
                     else if (HandlerCorrectCapture != null)
                     {
-                        // Вызываем событие
                         HandlerCorrectCapture.Invoke();
                     }
                 }
