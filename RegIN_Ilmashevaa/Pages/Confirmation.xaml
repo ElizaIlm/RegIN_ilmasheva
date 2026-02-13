@@ -60,7 +60,7 @@
                    VerticalAlignment="Top"
                    Foreground="#FF673AB7"
                    FontSize="18"
-                   MouseDown="Openlogin"/>
+                   MouseDown="OpenLogin"/>
             </Grid>
         </materialDesign:Card>
     </Grid>

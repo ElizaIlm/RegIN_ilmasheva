@@ -119,46 +119,28 @@ namespace RegIN_Ilmashevaa.Pages
         {
             // Регулярное выражение
             Regex regex = new Regex(@"(?=.*[0-9])(?=.*[!@#$%^&?*\-_=])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&?*\-_=]{10,}");
-            // Строка содержит хотя бы одно число;
-            // Строка содержит хотя бы один спецсимвол;
-            // Строка содержит хотя бы одну латинскую букву в нижнем регистре;
-            // Строка содержит хотя бы одну латинскую букву в верхнем регистре;
-            // Строка состоит не менее, чем из 10 вышеупомянутых символов.
 
-            // Введён ли пароль зависит от результата регулярного выражения
             BCorrectPassword = regex.IsMatch(TbPassword.Password);
-            // Если введённый пароль удовлетворяет регулярное выражение
             if (regex.IsMatch(TbPassword.Password) == true)
             {
-                // Выводим пустое сообщение с чёрным цветом
                 SetNotification("", Brushes.Black);
-                // Если пароль уже введён для повторения
                 if (TbConfirmPassword.Password.Length > 0)
                 {
-                    // Вызываем проверку повторения пароля
                     ConfirmPassword(true);
                 }
-                // Вызываем функцию регистрации
                 OnRegin();
             }
             else
             {
-                // Если введённый пароль не удовлетворяет регулярное выражение
-                // Выводим сообщение с ошибкой красным цветом
                 SetNotification("Invalid password", Brushes.Red);
             }
         }
 
         #endregion
         #region SetConfirmPassword
-        /// <summary>
-        /// Метод повторного ввода пароля
-        /// </summary>
         private void ConfirmPassword(object sender, KeyEventArgs e)
         {
-            // Если нажата клавиша Enter
             if (e.Key == Key.Enter)
-                // Вызываем метод повторения пароля
                 ConfirmPassword();
         }
 
@@ -249,9 +231,10 @@ namespace RegIN_Ilmashevaa.Pages
             // Проверяем что символ относится к категории букв
             e.Handled = !(Char.IsLetter(e.Text, 0));
         }
-        public void SetNotification(string Message, SolidColorBrush _Color)
+        public void SetNotification(string message, Brush color)
         {
-
+            LNameUser.Content = message;
+            LNameUser.Foreground = color;
         }
         private void SelectImage(object sender, MouseButtonEventArgs e)
         {
@@ -275,87 +258,52 @@ namespace RegIN_Ilmashevaa.Pages
                     }
                     else
                     {
-                        // Задаём ширину изображения
                         NewWidth = 256;
-                        // Расчитываем новую высоту относительно высоты
                         NewHeight = (int)(image.Height * (256f / image.Width));
                     }
-                    // Изменяем изображение
                     image.Resize(NewWidth, NewHeight);
-                    // Сохраняем изображение
                     image.Save("defau.jpg");
                 }
-                // обрезаем изображение
-                using (Imaging.RasterImage rasterImage = (Imaging.RasterImage)Imaging.Image.Load("defau.jpg"))
+                using (Imaging.RasterImage rasterImage = (Imaging.RasterImage)Imaging.Image.Load("IUser.jpg"))
                 {
-                    // Перед кадрированием изображение следует кэшировать для лучшей производительности.
                     if (!rasterImage.IsCached)
                     {
                         rasterImage.CacheData();
                     }
-                    // Задаём X
                     int X = 0;
-                    // Задаём ширину изображения
                     int Width = 256;
-                    // Задаём Y
                     int Y = 0;
-                    // Задаём высоту изображения
                     int Height = 256;
-
-                    // Если ширина изображения больше чем высота
                     if (rasterImage.Width > rasterImage.Height)
                     {
-                        // Расчитываем X как середину изображения
                         X = (int)((rasterImage.Width - 256f) / 2);
                     }
                     else
                     {
-                        // Если высота больше
-                        // Расчитываем Y как середину
                         Y = (int)((rasterImage.Height - 256f) / 2);
-
-                        // Создайте экземпляр класса Rectangle нужного размера и обрежьте изображение.
                         Imaging.Rectangle rectangle = new Imaging.Rectangle(X, Y, Width, Height);
                         rasterImage.Crop(rectangle);
-
-                        // Сохраните обрезанное изображение.
                         rasterImage.Save("IUser.jpg");
                     }
-
-
                 }
-
-                // Создаём анимацию старта
                 DoubleAnimation StartAnimation = new DoubleAnimation();
-                // Указываем значение от которого она выполняется
                 StartAnimation.From = 1;
-                // Указываем значение до которого она выполняется
                 StartAnimation.To = 0;
-                // Указываем продолжительность выполнения
                 StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
-                // Присваиваем событие при конце анимации
                 StartAnimation.Completed += delegate
                 {
-                    // Устанавливаем изображение
                     IUser.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + @"\IUser.jpg"));
                     // Создаём анимацию конца
                     DoubleAnimation EndAnimation = new DoubleAnimation();
-                    // Указываем значение от которого она выполняется
                     EndAnimation.From = 0;
-                    // Указываем значение до которого она выполняется
                     EndAnimation.To = 1;
-                    // Указываем продолжительность выполнения
                     EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
-                    // Запускаем анимацию плавной смены на изображении
                     IUser.BeginAnimation(Image.OpacityProperty, EndAnimation);
                 };
-                // Запускаем анимацию плавной смены на изображении
                 IUser.BeginAnimation(Image.OpacityProperty, StartAnimation);
-                // Запоминаем что изображение указано
                 BSetImages = true;
             }
             else
-                // Запоминаем что изображение не указано
                 BSetImages = false;
         }
         private void OpenLogin(object sender, MouseButtonEventArgs e)

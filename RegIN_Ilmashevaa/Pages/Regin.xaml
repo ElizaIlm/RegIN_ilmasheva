@@ -31,6 +31,7 @@
                     <EllipseGeometry RadiusX="50" RadiusY="50" Center="50,50" />
                     </Image.Clip>
                 </Image>
+                <Label x:Name="LNameUser" Margin="10,137,10,0" HorizontalAlignment="Center" Content="" VerticalAlignment="Top"/>
                 <Label Content="Enter login"
                        Margin="10,161,10,0"
                        VerticalAlignment="Top"/>
