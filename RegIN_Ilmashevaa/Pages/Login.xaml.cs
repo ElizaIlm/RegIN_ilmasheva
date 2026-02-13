@@ -103,7 +103,7 @@ namespace RegIN_Ilmashevaa.Pages
             Capture.IsEnabled = false;
             IsCapture = true;
         }
-        public void SetNotification(string Message, Brush _Color)
+        public void SetNotification(string Message, SolidColorBrush _Color)
         {
             LNameUser.Content = Message;
             LNameUser.Foreground = _Color;
@@ -138,7 +138,7 @@ namespace RegIN_Ilmashevaa.Pages
                 {
                     if (MainWindow.mainWindow.UserLogIn.Password == TbPassword.Password)
                     {
-                        MainWindow.mainWindow.OpenPage(new Confirmation(Confirmation.TypeConfirm.Login));
+                        MainWindow.mainWindow.OpenPage(new Confirmation(Confirmation.TypeConfirmaton.Login));
                     }
                 }
                 else
